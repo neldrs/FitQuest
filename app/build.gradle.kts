@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -26,6 +28,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -39,7 +42,12 @@ android {
 }
 
 dependencies {
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth")
     implementation ("androidx.activity:activity-ktx:1.2.0")
     implementation ("androidx.fragment:fragment-ktx:1.3.0")
     implementation("androidx.core:core-ktx:1.9.0")
