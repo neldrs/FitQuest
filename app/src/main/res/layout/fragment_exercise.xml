@@ -6,15 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".ui.exercise.ExerciseFragment">
 
+    <ImageButton
+        android:id="@+id/bRun"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:background="@drawable/round_shape"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_run"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.205"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.054" />
+
     <TextView
-        android:id="@+id/text_exercise"
+        android:id="@+id/tvStepCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:text="Steps: 0"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
