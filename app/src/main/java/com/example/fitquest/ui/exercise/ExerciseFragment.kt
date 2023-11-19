@@ -17,6 +17,7 @@ import android.hardware.SensorManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.example.fitquest.R
 
 
@@ -34,8 +35,9 @@ class ExerciseFragment : Fragment(), SensorEventListener {
             Toast.makeText(context, "Step counter permission denied. The feature will not be available.", Toast.LENGTH_LONG).show()        }
     }
 
-
+    private lateinit var viewModel: ExerciseViewModel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        viewModel = ViewModelProvider(this).get(ExerciseViewModel::class.java)
         val view = inflater.inflate(R.layout.fragment_exercise, container, false)
         tvStepCount = view.findViewById(R.id.tvStepCount)
 
@@ -47,6 +49,11 @@ class ExerciseFragment : Fragment(), SensorEventListener {
         } else {
             checkPermissions()
         }
+
+        viewModel.stepCount.observe(viewLifecycleOwner, Observer { steps ->
+            tvStepCount.text = "Steps: $steps"
+        })
+
 
         return view
     }
@@ -98,7 +105,7 @@ class ExerciseFragment : Fragment(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_STEP_COUNTER) {
             val steps = event.values[0].toInt()
-            tvStepCount.text = "Steps: $steps"
+            viewModel.updateStepCount(steps)
         }
     }
 }

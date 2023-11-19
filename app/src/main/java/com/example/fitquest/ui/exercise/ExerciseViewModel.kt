@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 
 class ExerciseViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is exercise Fragment"
+    private val _stepCount = MutableLiveData<Int>()
+    val stepCount: LiveData<Int> = _stepCount
+
+    fun updateStepCount(steps: Int){
+        _stepCount.value = steps
     }
-    val text: LiveData<String> = _text
 }
