@@ -38,8 +38,8 @@
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="48dp"
+        android:gravity="bottom|center"
         android:text="Daily Water Intake"
         android:textSize="20sp" />
 

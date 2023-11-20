@@ -6,22 +6,27 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button  // Ensure that this import statement is present
+import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import com.example.fitquest.databinding.FragmentNutritionBinding
-import androidx.lifecycle.ViewModelProvider
 import android.widget.ProgressBar
-
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.example.fitquest.databinding.FragmentNutritionBinding
+import com.example.fitquest.ui.nutrition.RowEntry
+import com.example.fitquest.ui.nutrition.RowEntryAdapter
 
 class NutritionFragment : Fragment() {
 
     private var _binding: FragmentNutritionBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    // Initialize an empty list of RowEntry
+    private val rowEntries: MutableList<RowEntry> = mutableListOf()
+
+    // Initialize RowEntryAdapter with an empty list
+    private val rowEntryAdapter: RowEntryAdapter by lazy {
+        RowEntryAdapter(rowEntries)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +39,12 @@ class NutritionFragment : Fragment() {
         val editTextNumber1: EditText = binding.editTextNumber1
         val editTextNumber2: EditText = binding.editTextNumber2
         val progressBar: ProgressBar = binding.progressBar
+        val buttonAddEntry: Button = binding.button4
+
+        // Set the adapter for the RecyclerView
+        val recyclerView: RecyclerView = binding.CalorieList
+        val rowEntryAdapter = RowEntryAdapter(mutableListOf())  // Use mutableListOf()
+        recyclerView.adapter = rowEntryAdapter
 
         editTextNumber2.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -49,6 +60,13 @@ class NutritionFragment : Fragment() {
                 updateResult(progressBar)
             }
         })
+
+        buttonAddEntry.setOnClickListener {
+            // Add a sample entry when the button is clicked
+            val newEntry = RowEntry("Sample String", 42.0)
+            rowEntryAdapter.entries.add(newEntry)
+            rowEntryAdapter.notifyDataSetChanged()
+        }
 
         return root
     }
@@ -77,3 +95,4 @@ class NutritionFragment : Fragment() {
         _binding = null
     }
 }
+
