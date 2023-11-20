@@ -24,6 +24,7 @@ import java.lang.Math.round
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.fitquest.R
 import com.example.fitquest.ui.nutrition.NutritionViewModel
 
 
