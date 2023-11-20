@@ -9,11 +9,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fitquest.R
 import com.example.fitquest.databinding.FragmentNutritionBinding
 import com.example.fitquest.ui.nutrition.RowEntry
 import com.example.fitquest.ui.nutrition.RowEntryAdapter
+import java.lang.Math.round
 
 class NutritionFragment : Fragment() {
 
@@ -78,6 +81,9 @@ class NutritionFragment : Fragment() {
         val number1 = editTextNumber1.text.toString().toFloatOrNull() ?: 0f
         val number2 = editTextNumber2.text.toString().toFloatOrNull() ?: 0f
 
+        val waterIntakeText: TextView = binding.textView4
+
+
         val result = if (number1 != 0f) {
             number2 / (number1 / 2)
         } else {
@@ -87,6 +93,8 @@ class NutritionFragment : Fragment() {
         // Update the ProgressBar's progress based on the ratio
         val ratio = (result).coerceIn(0f, 1f) // Adjust as needed
         val progress = (ratio * 100).toInt()
+        // Update the water intake text based on the entered value
+        waterIntakeText.text = "Daily Water Intake Goal: "+(round(result*100)).toString()+"%"
         progressBar.progress = progress
     }
 
