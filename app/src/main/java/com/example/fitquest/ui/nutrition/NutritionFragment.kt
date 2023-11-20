@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -34,8 +35,13 @@ class NutritionFragment : Fragment() {
     private var _binding: FragmentNutritionBinding? = null
     private val binding get() = _binding!!
 
-    // Initialize RowEntryAdapter with an empty list
-    val rowEntryAdapter = RowEntryAdapter(mutableListOf())
+
+    val rowEntryAdapter = RowEntryAdapter(mutableListOf(), object : OnItemClickListener {
+        override fun onDeleteClick(position: Int) {
+            // Handle item deletion here
+            nutritionViewModel.removeEntry(position)
+        }
+    })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,6 +61,11 @@ class NutritionFragment : Fragment() {
             // Update the Total Calories TextView
             binding.textView5.text = "Total Calories: $totalCalories"
         })
+    }
+
+    fun onDeleteClick(position: Int) {
+        // Handle item deletion here
+        nutritionViewModel.removeEntry(position)
     }
 
     override fun onCreateView(
@@ -142,12 +153,14 @@ class NutritionFragment : Fragment() {
 
         val waterIntakeText: TextView = binding.textView4
 
-        val result = if (number1 != 0f) {
+        var result = if (number1 != 0f) {
             number2 / (number1 / 2)
         } else {
             0f
         }
-
+        if (result > 1.0){
+            result = 1.0F
+        }
         // Update the ProgressBar's progress based on the ratio
         val ratio = (result).coerceIn(0f, 1f) // Adjust as needed
         val progress = (ratio * 100).toInt()

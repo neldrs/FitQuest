@@ -3,37 +3,35 @@ package com.example.fitquest.ui.nutrition
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitquest.R
 import com.example.fitquest.ui.nutrition.NutritionViewModel
 
+interface OnItemClickListener {
+    fun onDeleteClick(position: Int)
+}
 
 class RowEntryAdapter(
-    var entries: MutableList<RowEntry>
+    var entries: MutableList<RowEntry>,
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<RowEntryAdapter.ViewHolder>() {
 
-
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textString: TextView = itemView.findViewById(R.id.textString)
         val textNumber: TextView = itemView.findViewById(R.id.textNumber)
-    }
 
-    /*inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textString: TextView = itemView.findViewById(R.id.textString)
-        val textNumber: TextView = itemView.findViewById(R.id.textNumber)
         init {
-            itemView.setOnClickListener {
-                // Handle item click, you can remove the clicked entry here
+            itemView.findViewById<ImageButton>(R.id.deleteButton).setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val clickedEntry = entries[position]
-                    nutritionViewModel.removeEntry(clickedEntry)
+                    listener.onDeleteClick(position)
                 }
             }
         }
-    }*/
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

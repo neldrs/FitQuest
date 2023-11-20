@@ -35,6 +35,12 @@
         android:text=""
         android:textColor="#46494C"
         android:textSize="16sp" />
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete"
+        android:background="#C5C3C6"/>
 
 </LinearLayout>
 

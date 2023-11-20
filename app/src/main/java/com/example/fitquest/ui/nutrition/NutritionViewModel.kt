@@ -27,9 +27,11 @@ class NutritionViewModel(application: Application) : AndroidViewModel(applicatio
         entriesLiveData.value = currentList
     }
 
-    fun removeEntry(entry: RowEntry) {
+    fun removeEntry(position: Int) {
         val currentList = entriesLiveData.value ?: mutableListOf()
-        currentList.remove(entry)
-        entriesLiveData.value = currentList
+        if (position in currentList.indices) {
+            currentList.removeAt(position)
+            entriesLiveData.value = currentList
+        }
     }
 }
