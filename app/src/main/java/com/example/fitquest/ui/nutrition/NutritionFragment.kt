@@ -35,9 +35,7 @@ class NutritionFragment : Fragment() {
     private val binding get() = _binding!!
 
     // Initialize RowEntryAdapter with an empty list
-    private val rowEntryAdapter: RowEntryAdapter by lazy {
-        RowEntryAdapter(mutableListOf())
-    }
+    val rowEntryAdapter = RowEntryAdapter(mutableListOf())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,6 +47,13 @@ class NutritionFragment : Fragment() {
                 RowEntry(entry.textString, entry.textNumber)
             }.toMutableList()
             rowEntryAdapter.notifyDataSetChanged()
+
+            // Update total calories
+            nutritionViewModel.updateTotalCalories()
+        })
+        nutritionViewModel.totalCaloriesLiveData.observe(viewLifecycleOwner, Observer { totalCalories ->
+            // Update the Total Calories TextView
+            binding.textView5.text = "Total Calories: $totalCalories"
         })
     }
 

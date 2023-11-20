@@ -10,13 +10,26 @@ import androidx.lifecycle.AndroidViewModel
 
 class NutritionViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val _totalCaloriesLiveData = MutableLiveData<Double>()
+    val totalCaloriesLiveData: LiveData<Double> get() = _totalCaloriesLiveData
+
     val entriesLiveData: MutableLiveData<MutableList<RowEntry>> by lazy {
         MutableLiveData<MutableList<RowEntry>>()
+    }
+    public fun updateTotalCalories() {
+        val totalCalories = entriesLiveData.value?.sumByDouble { it.textNumber } ?: 0.0
+        _totalCaloriesLiveData.value = totalCalories
     }
 
     fun addEntry(entry: RowEntry) {
         val currentList = entriesLiveData.value ?: mutableListOf()
         currentList.add(entry)
+        entriesLiveData.value = currentList
+    }
+
+    fun removeEntry(entry: RowEntry) {
+        val currentList = entriesLiveData.value ?: mutableListOf()
+        currentList.remove(entry)
         entriesLiveData.value = currentList
     }
 }
