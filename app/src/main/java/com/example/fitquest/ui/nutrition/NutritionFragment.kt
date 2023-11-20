@@ -21,19 +21,35 @@ import com.example.fitquest.ui.nutrition.RowEntry
 import com.example.fitquest.ui.nutrition.RowEntryAdapter
 import java.lang.Math.round
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import com.example.fitquest.ui.nutrition.NutritionViewModel
 
 
 class NutritionFragment : Fragment() {
 
+    private val nutritionViewModel: NutritionViewModel by activityViewModels()
+
+
     private var _binding: FragmentNutritionBinding? = null
     private val binding get() = _binding!!
 
-    // Initialize an empty list of RowEntry
-    private val rowEntries: MutableList<RowEntry> = mutableListOf()
-
     // Initialize RowEntryAdapter with an empty list
     private val rowEntryAdapter: RowEntryAdapter by lazy {
-        RowEntryAdapter(rowEntries)
+        RowEntryAdapter(mutableListOf())
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Observe changes in the ViewModel
+        nutritionViewModel.entriesLiveData.observe(viewLifecycleOwner, Observer { entries ->
+            // Update your RecyclerView adapter with the new list of entries
+            rowEntryAdapter.entries = entries.map { entry ->
+                RowEntry(entry.textString, entry.textNumber)
+            }.toMutableList()
+            rowEntryAdapter.notifyDataSetChanged()
+        })
     }
 
     override fun onCreateView(
@@ -44,7 +60,6 @@ class NutritionFragment : Fragment() {
         _binding = FragmentNutritionBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         val editTextNumber1: EditText = binding.editTextNumber1
         val editTextNumber2: EditText = binding.editTextNumber2
         val progressBar: ProgressBar = binding.progressBar
@@ -53,9 +68,7 @@ class NutritionFragment : Fragment() {
         // Set the adapter for the RecyclerView
         val recyclerView: RecyclerView = binding.CalorieList
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val rowEntryAdapter = RowEntryAdapter(mutableListOf())  // Use mutableListOf()
         recyclerView.adapter = rowEntryAdapter
-
 
         editTextNumber2.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -94,10 +107,9 @@ class NutritionFragment : Fragment() {
 
                 // Check if both inputs are valid
                 if (inputString.isNotBlank() && inputNumber != null) {
-                    // Add a new entry to the RecyclerView
+                    // Add a new entry to the ViewModel
                     val newEntry = RowEntry(inputString, inputNumber)
-                    rowEntryAdapter.entries.add(newEntry)
-                    rowEntryAdapter.notifyDataSetChanged()
+                    nutritionViewModel.addEntry(newEntry)
                 } else {
                     // Show a toast or handle invalid input
                     Toast.makeText(requireContext(), "Invalid input", Toast.LENGTH_SHORT).show()
@@ -125,7 +137,6 @@ class NutritionFragment : Fragment() {
 
         val waterIntakeText: TextView = binding.textView4
 
-
         val result = if (number1 != 0f) {
             number2 / (number1 / 2)
         } else {
@@ -136,7 +147,7 @@ class NutritionFragment : Fragment() {
         val ratio = (result).coerceIn(0f, 1f) // Adjust as needed
         val progress = (ratio * 100).toInt()
         // Update the water intake text based on the entered value
-        waterIntakeText.text = "Daily Water Intake Goal: "+(round(result*100)).toString()+"%"
+        waterIntakeText.text = "Daily Water Intake Goal: ${(round(result * 100))}%"
         progressBar.progress = progress
     }
 
