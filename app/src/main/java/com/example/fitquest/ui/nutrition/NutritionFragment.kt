@@ -6,22 +6,30 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button  // Ensure that this import statement is present
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.example.fitquest.R
 import com.example.fitquest.databinding.FragmentNutritionBinding
-import androidx.lifecycle.ViewModelProvider
-import android.widget.ProgressBar
-
+import com.example.fitquest.ui.nutrition.RowEntry
+import com.example.fitquest.ui.nutrition.RowEntryAdapter
+import java.lang.Math.round
 
 class NutritionFragment : Fragment() {
 
     private var _binding: FragmentNutritionBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    // Initialize an empty list of RowEntry
+    private val rowEntries: MutableList<RowEntry> = mutableListOf()
+
+    // Initialize RowEntryAdapter with an empty list
+    private val rowEntryAdapter: RowEntryAdapter by lazy {
+        RowEntryAdapter(rowEntries)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +42,12 @@ class NutritionFragment : Fragment() {
         val editTextNumber1: EditText = binding.editTextNumber1
         val editTextNumber2: EditText = binding.editTextNumber2
         val progressBar: ProgressBar = binding.progressBar
+        val buttonAddEntry: Button = binding.button4
+
+        // Set the adapter for the RecyclerView
+        val recyclerView: RecyclerView = binding.CalorieList
+        val rowEntryAdapter = RowEntryAdapter(mutableListOf())  // Use mutableListOf()
+        recyclerView.adapter = rowEntryAdapter
 
         editTextNumber2.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -50,6 +64,13 @@ class NutritionFragment : Fragment() {
             }
         })
 
+        buttonAddEntry.setOnClickListener {
+            // Add a sample entry when the button is clicked
+            val newEntry = RowEntry("Sample String", 42.0)
+            rowEntryAdapter.entries.add(newEntry)
+            rowEntryAdapter.notifyDataSetChanged()
+        }
+
         return root
     }
 
@@ -60,6 +81,9 @@ class NutritionFragment : Fragment() {
         val number1 = editTextNumber1.text.toString().toFloatOrNull() ?: 0f
         val number2 = editTextNumber2.text.toString().toFloatOrNull() ?: 0f
 
+        val waterIntakeText: TextView = binding.textView4
+
+
         val result = if (number1 != 0f) {
             number2 / (number1 / 2)
         } else {
@@ -69,6 +93,8 @@ class NutritionFragment : Fragment() {
         // Update the ProgressBar's progress based on the ratio
         val ratio = (result).coerceIn(0f, 1f) // Adjust as needed
         val progress = (ratio * 100).toInt()
+        // Update the water intake text based on the entered value
+        waterIntakeText.text = "Daily Water Intake Goal: "+(round(result*100)).toString()+"%"
         progressBar.progress = progress
     }
 
@@ -77,3 +103,4 @@ class NutritionFragment : Fragment() {
         _binding = null
     }
 }
+

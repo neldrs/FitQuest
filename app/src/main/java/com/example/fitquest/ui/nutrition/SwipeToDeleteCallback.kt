@@ -3,7 +3,7 @@ package com.example.fitquest.ui.nutrition
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class SwipeToDeleteCallback(private val adapter: EntryAdapter) :
+class SwipeToDeleteCallback(private val adapter: RowEntryAdapter) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     override fun onMove(
