@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/nutrition_fill0_wght400_grad0_opsz24"
+    android:antialias="true"
+    android:autoMirrored="true"
+    android:dither="true"/>
