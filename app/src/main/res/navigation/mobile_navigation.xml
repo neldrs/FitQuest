@@ -9,7 +9,11 @@
         android:id="@+id/navigation_exercise"
         android:name="com.example.fitquest.ui.exercise.ExerciseFragment"
         android:label="@string/title_exercise"
-        tools:layout="@layout/fragment_exercise" />
+        tools:layout="@layout/fragment_exercise" >
+        <action
+            android:id="@+id/action_navigation_exercise_to_navigation_weight_training"
+            app:destination="@id/navigation_weight_training" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_nutrition"
@@ -22,4 +26,10 @@
         android:name="com.example.fitquest.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_weight_training"
+        android:name="com.example.fitquest.ui.exercise.WeightTrainingFragment"
+        android:label="@string/title_weight"
+        tools:layout="@layout/fragment_weight_training" />
 </navigation>

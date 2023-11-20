@@ -14,13 +14,10 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.fitquest.R
 
 
@@ -29,7 +26,6 @@ class ExerciseFragment : Fragment(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var stepSensor: Sensor? = null
     private lateinit var tvStepCount: TextView
-
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -40,35 +36,13 @@ class ExerciseFragment : Fragment(), SensorEventListener {
     }
 
     private lateinit var viewModel: ExerciseViewModel
-    private lateinit var stepHistoryRecyclerView: RecyclerView
-    private lateinit var stepHistoryAdapter: RVStepsAdapter
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel = ViewModelProvider(this).get(ExerciseViewModel::class.java)
-        viewModel.loadFromPreferences(requireContext())
         val view = inflater.inflate(R.layout.fragment_exercise, container, false)
         tvStepCount = view.findViewById(R.id.tvStepCount)
 
         sensorManager = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
-        stepHistoryRecyclerView = view.findViewById(R.id.step_history_recycler_view)
-        stepHistoryAdapter = RVStepsAdapter(emptyList())
-        stepHistoryRecyclerView.adapter = stepHistoryAdapter
-        stepHistoryRecyclerView.layoutManager = LinearLayoutManager(context)
-
-        viewModel.stepHistory.observe(viewLifecycleOwner, Observer { stepHistory ->
-            stepHistoryAdapter.updateData(stepHistory)
-        })
-
-        viewModel.loadStepHistory()
-
-        val btnSaveSteps = view.findViewById<Button>(R.id.bSaveSteps)
-        btnSaveSteps.setOnClickListener {
-            val currentDate = viewModel.getCurrentDate()
-            val currentSteps = viewModel.stepCount.value ?: 0
-            viewModel.saveDailyStepTotal(StepEntry(currentDate, currentSteps))
-        }
 
         if (stepSensor == null) {
             Toast.makeText(context, "Step counter sensor not available on this device.", Toast.LENGTH_LONG).show()
@@ -115,7 +89,6 @@ class ExerciseFragment : Fragment(), SensorEventListener {
     }
     override fun onResume() {
         super.onResume()
-        // Consider not resetting isInitialStepCountSet here.
         stepSensor?.also { sensor ->
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI)
         }
@@ -123,22 +96,16 @@ class ExerciseFragment : Fragment(), SensorEventListener {
 
     override fun onPause() {
         super.onPause()
-        viewModel.saveToPreferences(requireContext())
         sensorManager.unregisterListener(this)
     }
-
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
     }
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_STEP_COUNTER) {
-            val totalStepsSinceReboot = event.values[0].toInt()
-            viewModel.updateStepCount(totalStepsSinceReboot)
+            val steps = event.values[0].toInt()
+            viewModel.updateStepCount(steps)
         }
     }
-
-
-
-
 }
