@@ -22,6 +22,7 @@
         android:hint="Food Item"
         android:text=""
         android:textColor="#46494C"
+
         android:textSize="16sp" />
 
     <TextView
@@ -41,6 +42,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_delete"
         android:background="#C5C3C6"/>
+
 
 </LinearLayout>
 
