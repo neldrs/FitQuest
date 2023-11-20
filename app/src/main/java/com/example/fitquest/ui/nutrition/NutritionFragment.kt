@@ -3,6 +3,7 @@ package com.example.fitquest.ui.nutrition
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitquest.R
 import com.example.fitquest.databinding.FragmentNutritionBinding
@@ -38,6 +40,7 @@ class NutritionFragment : Fragment() {
     ): View {
         _binding = FragmentNutritionBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        Log.d("RecyclerView", "Item count: ${rowEntryAdapter.itemCount}")
 
         val editTextNumber1: EditText = binding.editTextNumber1
         val editTextNumber2: EditText = binding.editTextNumber2
@@ -46,8 +49,10 @@ class NutritionFragment : Fragment() {
 
         // Set the adapter for the RecyclerView
         val recyclerView: RecyclerView = binding.CalorieList
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val rowEntryAdapter = RowEntryAdapter(mutableListOf())  // Use mutableListOf()
         recyclerView.adapter = rowEntryAdapter
+        Log.d("RecyclerView", "Item count: ${rowEntryAdapter.itemCount}")
 
         editTextNumber2.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -70,6 +75,7 @@ class NutritionFragment : Fragment() {
             rowEntryAdapter.entries.add(newEntry)
             rowEntryAdapter.notifyDataSetChanged()
         }
+        Log.d("RecyclerView", "Item count: ${rowEntryAdapter.itemCount}")
 
         return root
     }

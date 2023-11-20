@@ -7,14 +7,16 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="10dp"
-    android:layout_marginTop="0dp">
+    android:layout_marginTop="0dp"
+    android:background="#DCDCDD">
 
     <!-- Your existing layout content goes here -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="16dp">
 
         <EditText
             android:id="@+id/editTextNumber1"
@@ -23,7 +25,8 @@
             android:layout_marginTop="0dp"
             android:layout_weight="1"
             android:hint="weight lbs"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:textColor="#46494C" />
 
         <EditText
             android:id="@+id/editTextNumber2"
@@ -32,7 +35,8 @@
             android:layout_marginTop="0dp"
             android:layout_weight="1"
             android:hint="water consumed Oz"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:textColor="#46494C"/>
     </LinearLayout>
 
     <TextView
@@ -41,17 +45,20 @@
         android:layout_height="48dp"
         android:gravity="bottom|center"
         android:text="Daily Water Intake"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="#46494C"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
         android:max="100"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:progress="0"
-        android:progressTint="@android:color/holo_blue_bright" />
+        android:progressDrawable="@drawable/custom_progress_bar" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,7 +70,11 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Add Entry" />
+            android:text="Add Entry"
+            android:background="@drawable/rounded_corner_button"
+            android:textColor="@color/white"
+            android:layout_marginBottom="5dp"
+            />
 
         <TextView
             android:id="@+id/textView5"
@@ -72,13 +83,18 @@
             android:layout_weight="1"
             android:gravity="center"
             android:hint="Total Calories"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="#46494C" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/CalorieList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_corners"
+        android:visibility="visible"
+        tools:itemCount="10"
+        tools:listitem="@layout/row_entry_item" />
 
 </LinearLayout>
 

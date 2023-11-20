@@ -1,10 +1,16 @@
 <!-- row_entry_item.xml -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="0dp"
+    android:background="@drawable/rounded_corners_entry"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="8dp"
+    app:layout_goneMarginTop="0dp">
 
     <TextView
         android:id="@+id/textString"
@@ -14,7 +20,8 @@
         android:layout_weight="0.67"
         android:gravity="start"
         android:hint="Food Item"
-        android:textColor="@android:color/black"
+        android:text=""
+        android:textColor="#46494C"
         android:textSize="16sp" />
 
     <TextView
@@ -25,7 +32,8 @@
         android:layout_weight="0.33"
         android:gravity="center"
         android:hint="Calories"
-        android:textColor="@android:color/black"
+        android:text=""
+        android:textColor="#46494C"
         android:textSize="16sp" />
 
 </LinearLayout>
