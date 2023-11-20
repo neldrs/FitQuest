@@ -1,6 +1,8 @@
 package com.example.fitquest.ui.nutrition
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,13 +33,22 @@ class NutritionFragment : Fragment() {
 
         val editTextNumber1: EditText = binding.editTextNumber1
         val editTextNumber2: EditText = binding.editTextNumber2
-        val btnUpdateResult: Button = binding.btnUpdateResult
-        val textResult: TextView = binding.textResult
         val progressBar: ProgressBar = binding.progressBar
 
-        btnUpdateResult.setOnClickListener {
-            updateResult(progressBar)
-        }
+        editTextNumber2.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Not needed for this example
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Not needed for this example
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Update result and progress when text is entered into editTextNumber2
+                updateResult(progressBar)
+            }
+        })
 
         return root
     }
@@ -45,7 +56,6 @@ class NutritionFragment : Fragment() {
     private fun updateResult(progressBar: ProgressBar) {
         val editTextNumber1: EditText = binding.editTextNumber1
         val editTextNumber2: EditText = binding.editTextNumber2
-        val textResult: TextView = binding.textResult
 
         val number1 = editTextNumber1.text.toString().toFloatOrNull() ?: 0f
         val number2 = editTextNumber2.text.toString().toFloatOrNull() ?: 0f
@@ -55,8 +65,6 @@ class NutritionFragment : Fragment() {
         } else {
             0f
         }
-
-        textResult.text = "Result: $result"
 
         // Update the ProgressBar's progress based on the ratio
         val ratio = (result).coerceIn(0f, 1f) // Adjust as needed
