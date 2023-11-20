@@ -10,13 +10,16 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.fitquest.databinding.FragmentNutritionBinding
 import androidx.lifecycle.ViewModelProvider
+import android.widget.ProgressBar
+
 
 class NutritionFragment : Fragment() {
 
     private var _binding: FragmentNutritionBinding? = null
-    private val binding get() = _binding!!
 
-    // Existing code...
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,15 +33,16 @@ class NutritionFragment : Fragment() {
         val editTextNumber2: EditText = binding.editTextNumber2
         val btnUpdateResult: Button = binding.btnUpdateResult
         val textResult: TextView = binding.textResult
+        val progressBar: ProgressBar = binding.progressBar
 
         btnUpdateResult.setOnClickListener {
-            updateResult()
+            updateResult(progressBar)
         }
 
         return root
     }
 
-    private fun updateResult() {
+    private fun updateResult(progressBar: ProgressBar) {
         val editTextNumber1: EditText = binding.editTextNumber1
         val editTextNumber2: EditText = binding.editTextNumber2
         val textResult: TextView = binding.textResult
@@ -47,19 +51,21 @@ class NutritionFragment : Fragment() {
         val number2 = editTextNumber2.text.toString().toFloatOrNull() ?: 0f
 
         val result = if (number1 != 0f) {
-            (number2 / (number1 / 2))*100
+            number2 / (number1 / 2)
         } else {
             0f
         }
 
-        textResult.text = "Water Intake: $result%"
-    }
+        textResult.text = "Result: $result"
 
-    // Existing code...
+        // Update the ProgressBar's progress based on the ratio
+        val ratio = (result).coerceIn(0f, 1f) // Adjust as needed
+        val progress = (ratio * 100).toInt()
+        progressBar.progress = progress
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
-
