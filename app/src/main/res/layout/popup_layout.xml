@@ -10,13 +10,13 @@
         android:id="@+id/editTextString"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter String"/>
+        android:hint="Food Name"/>
 
     <EditText
         android:id="@+id/editTextNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Number"
+        android:hint="Calorie Amount"
         android:inputType="numberDecimal"/>
 
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,8 @@ import com.example.fitquest.databinding.FragmentNutritionBinding
 import com.example.fitquest.ui.nutrition.RowEntry
 import com.example.fitquest.ui.nutrition.RowEntryAdapter
 import java.lang.Math.round
+import androidx.appcompat.app.AlertDialog
+
 
 class NutritionFragment : Fragment() {
 
@@ -40,7 +43,7 @@ class NutritionFragment : Fragment() {
     ): View {
         _binding = FragmentNutritionBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        Log.d("RecyclerView", "Item count: ${rowEntryAdapter.itemCount}")
+
 
         val editTextNumber1: EditText = binding.editTextNumber1
         val editTextNumber2: EditText = binding.editTextNumber2
@@ -52,7 +55,7 @@ class NutritionFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val rowEntryAdapter = RowEntryAdapter(mutableListOf())  // Use mutableListOf()
         recyclerView.adapter = rowEntryAdapter
-        Log.d("RecyclerView", "Item count: ${rowEntryAdapter.itemCount}")
+
 
         editTextNumber2.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -70,12 +73,45 @@ class NutritionFragment : Fragment() {
         })
 
         buttonAddEntry.setOnClickListener {
-            // Add a sample entry when the button is clicked
-            val newEntry = RowEntry("Sample String", 42.0)
-            rowEntryAdapter.entries.add(newEntry)
-            rowEntryAdapter.notifyDataSetChanged()
+            // Create an AlertDialog builder
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Add Entry")
+
+            // Inflate the popup layout
+            val inflater = requireActivity().layoutInflater
+            val dialogView = inflater.inflate(R.layout.popup_layout, null)
+            builder.setView(dialogView)
+
+            // Set up the buttons and listeners
+            builder.setPositiveButton("Add") { _, _ ->
+                // Handle positive button click (Add Entry)
+                val editTextString = dialogView.findViewById<EditText>(R.id.editTextString)
+                val editTextNumber = dialogView.findViewById<EditText>(R.id.editTextNumber)
+
+                // Get user input from the EditTexts
+                val inputString = editTextString.text.toString()
+                val inputNumber = editTextNumber.text.toString().toDoubleOrNull()
+
+                // Check if both inputs are valid
+                if (inputString.isNotBlank() && inputNumber != null) {
+                    // Add a new entry to the RecyclerView
+                    val newEntry = RowEntry(inputString, inputNumber)
+                    rowEntryAdapter.entries.add(newEntry)
+                    rowEntryAdapter.notifyDataSetChanged()
+                } else {
+                    // Show a toast or handle invalid input
+                    Toast.makeText(requireContext(), "Invalid input", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            builder.setNegativeButton("Cancel") { dialog, _ ->
+                // Handle negative button click (Cancel)
+                dialog.dismiss()
+            }
+
+            // Show the AlertDialog
+            builder.show()
         }
-        Log.d("RecyclerView", "Item count: ${rowEntryAdapter.itemCount}")
 
         return root
     }
