@@ -20,13 +20,13 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d("AlarmReceiver", "Alarm received")  // Add this log statement
+
         // Call the function to show the notification
         context?.showNotification()
     }
 
     private fun Context.showNotification() {
-        Log.d("AlarmReceiver", "Showing notification")  // Add this log statement
+
         // Define your notification logic here
 
         // For example:
