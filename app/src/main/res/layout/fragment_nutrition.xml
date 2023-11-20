@@ -1,11 +1,13 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="10dp"
+    android:layout_marginTop="0dp">
 
     <!-- Your existing layout content goes here -->
 
@@ -18,7 +20,7 @@
             android:id="@+id/editTextNumber1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="0dp"
             android:layout_weight="1"
             android:hint="weight lbs"
             android:inputType="numberDecimal" />
@@ -27,7 +29,7 @@
             android:id="@+id/editTextNumber2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="0dp"
             android:layout_weight="1"
             android:hint="water consumed Oz"
             android:inputType="numberDecimal" />
@@ -47,9 +49,9 @@
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:layout_marginTop="16dp"
+        android:max="100"
         android:progress="0"
-        android:progressTint="@android:color/holo_blue_bright"
-        android:max="100"/>
+        android:progressTint="@android:color/holo_blue_bright" />
 
     <LinearLayout
         android:layout_width="match_parent"
