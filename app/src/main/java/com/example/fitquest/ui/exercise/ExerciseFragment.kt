@@ -15,6 +15,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -47,6 +48,12 @@ class ExerciseFragment : Fragment(), SensorEventListener {
         viewModel = ViewModelProvider(this).get(ExerciseViewModel::class.java)
         viewModel.loadFromPreferences(requireContext())
         val view = inflater.inflate(R.layout.fragment_exercise, container, false)
+
+        val runButton : ImageButton = view.findViewById(R.id.bRun)
+        runButton.setOnClickListener {
+            replaceFragment(RecordRunFragment())
+        }
+
         tvStepCount = view.findViewById(R.id.tvStepCount)
 
         sensorManager = activity?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -84,6 +91,13 @@ class ExerciseFragment : Fragment(), SensorEventListener {
         return view
     }
 
+    private fun replaceFragment(fragment: Fragment){
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
     private fun checkPermissions() {
         when {
             ContextCompat.checkSelfPermission(
