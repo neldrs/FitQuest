@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitquest.R
+import androidx.navigation.fragment.findNavController
 
 
 class ExerciseFragment : Fragment(), SensorEventListener {
@@ -53,6 +54,10 @@ class ExerciseFragment : Fragment(), SensorEventListener {
         runButton.setOnClickListener {
             replaceFragment(RecordRunFragment())
         }
+
+
+        val bWeightButton: ImageButton = view.findViewById(R.id.bWeight)
+        bWeightButton.setOnClickListener(WeightButtonClickListener(view))
 
         tvStepCount = view.findViewById(R.id.tvStepCount)
 
@@ -98,6 +103,21 @@ class ExerciseFragment : Fragment(), SensorEventListener {
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
+
+    inner class WeightButtonClickListener(private val rootView: View) : View.OnClickListener {
+        override fun onClick(view: View?) {
+
+            val weightTrainingFragment = WeightTrainingFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host_fragment_activity_main, weightTrainingFragment)
+            transaction.addToBackStack(null) // Optional: Add to back stack
+            transaction.commit()
+            val navController = findNavController()
+            navController.popBackStack(R.id.navigation_exercise, false)
+            navController.navigate(R.id.navigation_weight_training)
+        }
+    }
+
     private fun checkPermissions() {
         when {
             ContextCompat.checkSelfPermission(
@@ -141,7 +161,6 @@ class ExerciseFragment : Fragment(), SensorEventListener {
         sensorManager.unregisterListener(this)
     }
 
-
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
     }
 
@@ -151,8 +170,4 @@ class ExerciseFragment : Fragment(), SensorEventListener {
             viewModel.updateStepCount(totalStepsSinceReboot)
         }
     }
-
-
-
-
 }

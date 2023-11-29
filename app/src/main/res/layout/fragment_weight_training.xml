@@ -16,7 +16,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:text="Type of Weight Exercise" />
+            android:text="Type of Weight Exercise"
+            android:textColor="#46494C" />
 
         <EditText
             android:id="@+id/reps"
@@ -25,7 +26,8 @@
             android:ems="10"
             android:inputType="text"
             android:minHeight="48dp"
-            android:text="# of reps" />
+            android:text="# of reps"
+            android:textColor="#46494C" />
 
         <EditText
             android:id="@+id/sets"
@@ -34,7 +36,8 @@
             android:ems="10"
             android:inputType="text"
             android:minHeight="48dp"
-            android:text="# of sets" />
+            android:text="# of sets"
+            android:textColor="#46494C" />
 
         <EditText
             android:id="@+id/weight"
@@ -43,7 +46,8 @@
             android:ems="10"
             android:inputType="text"
             android:minHeight="48dp"
-            android:text="# of weight" />
+            android:text="# of weight"
+            android:textColor="#46494C" />
 
         <Button
             android:id="@+id/bEnter"

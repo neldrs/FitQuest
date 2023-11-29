@@ -2,6 +2,8 @@ package com.example.fitquest.ui.exercise
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,10 +25,7 @@ class WeightTrainingFragment : Fragment() {
     private lateinit var weightEditText: EditText
     private lateinit var enterButton: Button
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         //return inflater.inflate(R.layout.fragment_weight_training, container, false)
         val view = inflater.inflate(R.layout.fragment_weight_training, container, false)
 
@@ -36,8 +35,14 @@ class WeightTrainingFragment : Fragment() {
         weightEditText = view.findViewById(R.id.weight)
         enterButton = view.findViewById(R.id.bEnter)
 
+        exerciseTypeEditText.setOnFocusChangeListener(ClearTextOnFocus())
+        repsEditText.setOnFocusChangeListener(ClearTextOnFocus())
+        setsEditText.setOnFocusChangeListener(ClearTextOnFocus())
+        weightEditText.setOnFocusChangeListener(ClearTextOnFocus())
+
+
         enterButton.setOnClickListener {
-            // Retrieve input values from EditText fields
+
             val exerciseType = exerciseTypeEditText.text.toString()
             val reps = repsEditText.text.toString()
             val sets = setsEditText.text.toString()
@@ -46,7 +51,7 @@ class WeightTrainingFragment : Fragment() {
             // TODO: Process the entered data, perform actions as needed
             // For example, you might save this data or perform calculations
 
-            // Clear EditText fields after processing
+
             exerciseTypeEditText.text.clear()
             repsEditText.text.clear()
             setsEditText.text.clear()
@@ -57,6 +62,14 @@ class WeightTrainingFragment : Fragment() {
 
     }
 
+    inner class ClearTextOnFocus : View.OnFocusChangeListener {
+        override fun onFocusChange(view: View?, hasFocus: Boolean) {
+            if (hasFocus) {
+                // Clear text when EditText gains focus
+                (view as? EditText)?.text?.clear()
+            }
+        }
+    }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(WeightTrainingViewModel::class.java)
