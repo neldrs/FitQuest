@@ -1,15 +1,16 @@
 package com.example.fitquest.ui.exercise
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.*
-import java.time.Duration
-import java.time.Instant
+import android.content.Intent
 import android.location.Location
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.*
+import kotlinx.coroutines.*
+import java.time.Duration
+import java.time.Instant
 
 
 class RecordRunViewModel() : ViewModel() {
@@ -74,27 +75,14 @@ class RecordRunViewModel() : ViewModel() {
     }
 
 
-    fun startRun() {
-        startInstant = Instant.now()
-        timerJob = CoroutineScope(Dispatchers.Main).launch {
-            while (isActive) {
-                val now = Instant.now()
-                startInstant?.let { start ->
-                    val duration = Duration.between(start, now)
-                    _elapsedTime.value = formatDuration(duration)
-                }
-                delay(1000)
-            }
-        }
+    fun startRun(context: Context) {
+        val serviceIntent = Intent(context, RecordRunService::class.java)
+        context.startService(serviceIntent)
     }
 
-    fun endRun() {
-        endInstant = Instant.now()
-        timerJob?.cancel()
-        startInstant?.let { start ->
-            duration = Duration.between(start, endInstant)
-            // Possibly calculate distance here
-        }
+    fun endRun(context: Context) {
+        val serviceIntent = Intent(context, RecordRunService::class.java)
+        context.stopService(serviceIntent)
     }
 
 }

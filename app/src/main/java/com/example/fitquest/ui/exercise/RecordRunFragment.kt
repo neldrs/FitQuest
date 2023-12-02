@@ -1,8 +1,11 @@
 package com.example.fitquest.ui.exercise
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +14,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.fitquest.R
 import java.time.Duration
 
@@ -34,10 +39,12 @@ class RecordRunFragment : Fragment() {
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(RecordRunViewModel::class.java)
         viewModel.initializeLocationClient(requireContext())
+
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +58,8 @@ class RecordRunFragment : Fragment() {
         tvRunTime = view.findViewById(R.id.tvRunTime)
         tvRunDistance = view.findViewById(R.id.tvRunDistance)
 
+        checkPermissionsAndStartLocationUpdates()
+
         val backButton: Button = view.findViewById(R.id.bBack)
         backButton.setOnClickListener {
             replaceFragment(ExerciseFragment())
@@ -59,16 +68,17 @@ class RecordRunFragment : Fragment() {
             tvRunTime.text = "$time"
         }
 
-        btnStartRun.setOnClickListener {
-            viewModel.startRun()
-            checkPermissionsAndStartLocationUpdates()
-            viewModel.startLocationUpdates()
-            tvRunStatus.text = "Run Status: In Progress"
+        btnStartRun.setOnClickListener { view: View? ->
+            context?.let { ctx ->
+                viewModel.startRun(ctx)
+                tvRunStatus.text = "Run Status: In Progress"
+            }
         }
 
-        btnEndRun.setOnClickListener {
-            viewModel.stopLocationUpdates()
-            viewModel.endRun()
+        btnEndRun.setOnClickListener { view: View? ->
+            viewModel.endRun(
+                requireContext()
+            )
             tvRunStatus.text = "Run Status: Finished"
         }
         viewModel.totalDistance.observe(viewLifecycleOwner) { distance ->
@@ -84,12 +94,22 @@ class RecordRunFragment : Fragment() {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
 
     private fun checkPermissionsAndStartLocationUpdates() {
-        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        val hasFineLocationPermission = ContextCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val shouldShowRequestPermissionRationale = shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION)
+
+        if (!hasFineLocationPermission) {
+            if (shouldShowRequestPermissionRationale) {
+            } else {
+                requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            }
         } else {
             viewModel.startLocationUpdates()
         }
     }
+
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
@@ -115,6 +135,34 @@ class RecordRunFragment : Fragment() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment)
         fragmentTransaction.commit()
+    }
+
+    private val locationUpdateReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val distance = intent.getFloatExtra("distance", 0f)
+            val time = intent.getStringExtra("time")
+            tvRunTime.text = time
+            tvRunDistance.text = formatDistance(distance)
+        }
+    }
+
+    private fun formatDistance(distanceInMeters: Float): String {
+        val distanceInMiles = distanceInMeters * 0.000621371
+        return String.format("%.2f miles", distanceInMiles)
+    }
+
+
+
+    override fun onStart() {
+        super.onStart()
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+            locationUpdateReceiver, IntentFilter("LOCATION_UPDATE")
+        )
+    }
+
+    override fun onStop() {
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(locationUpdateReceiver)
+        super.onStop()
     }
 
 }
