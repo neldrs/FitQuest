@@ -17,6 +17,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fitquest.R
 import java.time.Duration
 
@@ -46,6 +48,7 @@ class RecordRunFragment : Fragment() {
         viewModel.initializeLocationClient(requireContext())
 
     }
+    private lateinit var runRecyclerView: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -87,7 +90,18 @@ class RecordRunFragment : Fragment() {
             viewModel.endRun(requireContext())
             tvRunStatus.text = "Run Status: Finished"
         }
+        runRecyclerView = view.findViewById(R.id.recyclerViewRuns)
+        runRecyclerView.layoutManager = LinearLayoutManager(context)
 
+        viewModel.runHistory.observe(viewLifecycleOwner) { runList ->
+            if (runRecyclerView.adapter == null) {
+                runRecyclerView.adapter = RVRunRecordAdapter(runList)
+            } else {
+                (runRecyclerView.adapter as RVRunRecordAdapter).updateData(runList)
+            }
+        }
+
+        viewModel.loadRunHistory()
 
         return view
     }

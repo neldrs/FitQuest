@@ -65,7 +65,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="429dp"
+        android:layout_height="300dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:padding="16dp">
@@ -89,6 +89,19 @@
 
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="255dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewRuns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp" />
+
+    </LinearLayout>
+
 
 </LinearLayout>
 

@@ -7,9 +7,6 @@
     tools:context=".ui.exercise.ExerciseFragment"
     android:background="#DCDCDD">
 
-
-
-
     <ImageButton
         android:id="@+id/bRun"
         android:layout_width="55dp"

@@ -90,10 +90,12 @@ class RecordRunViewModel() : ViewModel() {
         }
     }
 
-
-
     companion object {
+        private const val TAG = "RecordRunViewModel"
     }
+
+    private val _runHistory = MutableLiveData<List<RunRecord>>()
+    val runHistory: LiveData<List<RunRecord>> get() = _runHistory
 
     fun loadRunHistory() {
         val currentUser = auth.currentUser
@@ -104,19 +106,16 @@ class RecordRunViewModel() : ViewModel() {
                 .orderBy("date", Query.Direction.DESCENDING)
                 .addSnapshotListener { snapshots, e ->
                     if (e != null) {
-                        Log.w("RecordRunViewModel", "Listen failed.", e)
+                        Log.w(TAG, "Listen failed.", e)
                         return@addSnapshotListener
                     }
 
                     val runHistoryList = snapshots?.toObjects(RunRecord::class.java)
                     _runHistory.value = runHistoryList ?: emptyList()
                 }
+
         }
+
     }
-
-    private val _runHistory = MutableLiveData<List<RunRecord>>()
-    val runHistory: LiveData<List<RunRecord>> = _runHistory
-
-
 
 }
