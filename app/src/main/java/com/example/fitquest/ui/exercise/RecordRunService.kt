@@ -1,4 +1,3 @@
-// TrackingService.java
 package com.example.fitquest.ui.exercise
 
 import android.R
@@ -32,7 +31,6 @@ import java.time.Instant
 class RecordRunService : Service() {
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var locationCallback: LocationCallback? = null
-    private val CHANNEL_ID = "ForegroundServiceChannel"
     override fun onCreate() {
         super.onCreate()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -78,21 +76,6 @@ class RecordRunService : Service() {
                 Looper.getMainLooper()
             )
         } catch (e: SecurityException) {
-        }
-    }
-
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val serviceChannel = NotificationChannel(
-                CHANNEL_ID,
-                "Foreground Service Channel",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            val manager = getSystemService(
-                NotificationManager::class.java
-            )
-            manager.createNotificationChannel(serviceChannel)
         }
     }
 

@@ -15,17 +15,12 @@ import java.time.Instant
 
 class RecordRunViewModel() : ViewModel() {
 
-    private var startInstant: Instant? = null
-    private var endInstant: Instant? = null
-    var duration: Duration? = null
-
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var lastLocation: Location? = null
 
     private val _elapsedTime = MutableLiveData<String>()
     val elapsedTime: LiveData<String> get() = _elapsedTime
 
-    private var timerJob: Job? = null
     private var _totalDistance = MutableLiveData<Float>()
     val totalDistance: LiveData<Float> get() = _totalDistance
 
@@ -40,13 +35,6 @@ class RecordRunViewModel() : ViewModel() {
                 calculateDistance(location)
             }
         }
-    }
-
-    private fun formatDuration(duration: Duration): String {
-        val hours = duration.toHours()
-        val minutes = duration.toMinutes() % 60
-        val seconds = duration.seconds % 60
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds)
     }
     private fun calculateDistance(newLocation: Location) {
         lastLocation?.let {
@@ -69,11 +57,6 @@ class RecordRunViewModel() : ViewModel() {
         } catch (e: SecurityException) {
         }
     }
-
-    fun stopLocationUpdates() {
-        fusedLocationClient?.removeLocationUpdates(locationCallback)
-    }
-
 
     fun startRun(context: Context) {
         val serviceIntent = Intent(context, RecordRunService::class.java)

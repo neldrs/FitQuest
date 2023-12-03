@@ -124,12 +124,6 @@ class RecordRunFragment : Fragment() {
         }
     }
 
-    private fun formatDuration(duration: Duration): String {
-        val hours = duration.toHours()
-        val minutes = duration.toMinutes() % 60
-        val seconds = duration.seconds % 60
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds)
-    }
     private fun replaceFragment(fragment: Fragment){
         val fragmentManager = requireActivity().supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
