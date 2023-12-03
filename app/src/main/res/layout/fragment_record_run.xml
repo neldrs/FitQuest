@@ -57,7 +57,7 @@
             android:id="@+id/tvRunStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Run Status: Not Started"
+            android:text=""
             android:textAlignment="center"
             android:textSize="24sp" />
 
