@@ -72,27 +72,25 @@ class RecordRunFragment : Fragment() {
             context?.let { ctx ->
                 viewModel.startRun(ctx)
                 tvRunStatus.text = "Run Status: In Progress"
+                tvRunTime.text = "00:00:00"
+                tvRunDistance.text = "0.00 miles"
             }
         }
 
         btnEndRun.setOnClickListener { view: View? ->
-            viewModel.endRun(
-                requireContext()
+            val runRecord = RunRecord(
+                distance = viewModel.totalDistance.value ?: 0f,
+                time = tvRunTime.text.toString(),
+                date = getCurrentDate()
             )
+            viewModel.saveRunRecordToFirestore(runRecord)
+            viewModel.endRun(requireContext())
             tvRunStatus.text = "Run Status: Finished"
-        }
-        viewModel.totalDistance.observe(viewLifecycleOwner) { distance ->
-            distance?.let {
-                val distanceInMiles = it * 0.000621371
-                tvRunDistance.text = String.format("%.2f miles", distanceInMiles)
-            }
         }
 
 
         return view
     }
-    private val LOCATION_PERMISSION_REQUEST_CODE = 1000
-
     private fun checkPermissionsAndStartLocationUpdates() {
         val hasFineLocationPermission = ContextCompat.checkSelfPermission(
             requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -110,19 +108,6 @@ class RecordRunFragment : Fragment() {
         }
     }
 
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            LOCATION_PERMISSION_REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    viewModel.startLocationUpdates()
-                } else {
-                    Toast.makeText(requireContext(), "Location permission is required for tracking the run.", Toast.LENGTH_SHORT).show();
-                }
-                return
-            }
-        }
-    }
 
     private fun replaceFragment(fragment: Fragment){
         val fragmentManager = requireActivity().supportFragmentManager
@@ -144,8 +129,6 @@ class RecordRunFragment : Fragment() {
         val distanceInMiles = distanceInMeters * 0.000621371
         return String.format("%.2f miles", distanceInMiles)
     }
-
-
 
     override fun onStart() {
         super.onStart()

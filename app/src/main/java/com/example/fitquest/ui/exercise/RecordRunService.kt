@@ -47,17 +47,13 @@ class RecordRunService : Service() {
                 LocalBroadcastManager.getInstance(this@RecordRunService).sendBroadcast(intent)
             }
 
+
+
         }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val notification = getNotification()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION)
-        } else {
-            startForeground(1, notification)
-        }
+        startForeground(1, getNotification())
         startRun()
         startLocationUpdates()
         return START_STICKY
@@ -106,6 +102,7 @@ class RecordRunService : Service() {
     private var timerJob: Job? = null
 
     fun startRun() {
+        resetRunData()
         startTime = Instant.now()
         timerJob = CoroutineScope(Dispatchers.Main).launch {
             while (isActive) {
@@ -113,7 +110,7 @@ class RecordRunService : Service() {
                 val intent = Intent("LOCATION_UPDATE")
                 intent.putExtra("time", elapsedTime)
                 LocalBroadcastManager.getInstance(this@RecordRunService).sendBroadcast(intent)
-                delay(1000) // Delay for 1 second
+                delay(1000)
             }
         }
     }
@@ -160,6 +157,11 @@ class RecordRunService : Service() {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .build()
+    }
+    fun resetRunData() {
+        totalDistance = 0f
+        lastLocation = null
+        startTime = Instant.now()
     }
 
 
