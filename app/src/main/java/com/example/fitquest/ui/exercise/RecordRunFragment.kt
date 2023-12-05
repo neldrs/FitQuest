@@ -138,7 +138,6 @@ class RecordRunFragment : Fragment() {
             }
             val time = intent.getStringExtra("time")
             tvRunTime.text = time
-            tvRunDistance.text = formatDistance(distance)
         }
     }
 
