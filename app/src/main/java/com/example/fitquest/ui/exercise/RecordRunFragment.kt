@@ -132,7 +132,10 @@ class RecordRunFragment : Fragment() {
 
     private val locationUpdateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val distance = intent.getFloatExtra("distance", 0f)
+            if (intent.hasExtra("distance")) {
+                val distance = intent.getFloatExtra("distance", 0f)
+                tvRunDistance.text = formatDistance(distance)
+            }
             val time = intent.getStringExtra("time")
             tvRunTime.text = time
             tvRunDistance.text = formatDistance(distance)
