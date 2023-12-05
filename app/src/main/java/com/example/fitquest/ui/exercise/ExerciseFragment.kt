@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.fitquest.databinding.FragmentExerciseBinding
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -58,6 +59,13 @@ class ExerciseFragment : Fragment(), SensorEventListener {
 
         val bWeightButton: ImageButton = view.findViewById(R.id.bWeight)
         bWeightButton.setOnClickListener(WeightButtonClickListener(view))
+
+        val exAlarmButton: Button = view.findViewById(R.id.bExerciseAlarm)
+        exAlarmButton.setOnClickListener {
+            val intent = Intent(requireContext(), ScheduleAlarmActivity::class.java)
+            startActivity(intent)
+            //scheduleExerciseAlarm()
+        }
 
         tvStepCount = view.findViewById(R.id.tvStepCount)
 

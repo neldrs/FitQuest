@@ -1,6 +1,9 @@
 package com.example.fitquest.ui.exercise
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +14,7 @@ import com.google.firebase.firestore.Query
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.*
 
 class ExerciseViewModel : ViewModel() {
 
@@ -25,6 +29,14 @@ class ExerciseViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance() // Firebase Authentication instance
 
+    /*
+    // LiveData for the selected recurring time
+    private val _selectedTime = MutableLiveData<Pair<Int, Int>>() // Pair(hour, minute)
+    val selectedTime: LiveData<Pair<Int, Int>> = _selectedTime
+
+    private val _reminderStatus = MutableLiveData<Boolean>()
+    val reminderStatus: LiveData<Boolean> = _reminderStatus
+     */
 
     fun updateStepCount(totalStepsSinceReboot: Int) {
         val currentDate = getCurrentDate()
@@ -101,6 +113,81 @@ class ExerciseViewModel : ViewModel() {
         }
     }
 
+    /*
+    // Method to set the recurring time
+    fun setAlarmTime(hour: Int, minute: Int) {
+        _selectedTime.value = Pair(hour, minute)
+    }
 
+    // Method to save the recurring time to SharedPreferences
+    fun saveAlarmTime(context: Context?) {
+        val sharedPref = context?.getSharedPreferences("ExercisePrefs", Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putInt("recurringHour", _selectedTime.value?.first ?: 0)
+            putInt("recurringMinute", _selectedTime.value?.second ?: 0)
+            apply()
+        }
+    }
 
+    // Method to load the recurring time from SharedPreferences
+    fun loadAlarmTime(context: Context?) {
+        val sharedPref = context?.getSharedPreferences("ExercisePrefs", Context.MODE_PRIVATE) ?: return
+        val hour = sharedPref.getInt("recurringHour", 0)
+        val minute = sharedPref.getInt("recurringMinute", 0)
+        _selectedTime.value = Pair(hour, minute)
+    }
+
+    // Method to set the reminder status
+    fun setReminderStatus(status: Boolean) {
+        _reminderStatus.value = status
+    }
+
+    // Method to save the reminder status to SharedPreferences
+    fun saveReminderStatus(context: Context) {
+        val sharedPref = context.getSharedPreferences("ExercisePrefs", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putBoolean("reminderStatus", _reminderStatus.value ?: false)
+            apply()
+        }
+    }
+
+    // Method to load the reminder status from SharedPreferences
+    fun loadReminderStatus(context: Context) {
+        val sharedPref = context.getSharedPreferences("ExercisePrefs", Context.MODE_PRIVATE)
+        _reminderStatus.value = sharedPref.getBoolean("reminderStatus", false)
+    }
+
+    // Schedule the exercise notification
+    fun scheduleExerciseNotification(context: Context) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        // Intent to trigger the ExerciseNotificationReceiver
+        val intent = Intent(context, ExerciseNotificationReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        // Set the notification time based on the selected alarm time
+        val selectedTime = _selectedTime.value
+        if (selectedTime != null) {
+            val calendar = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.HOUR_OF_DAY, _selectedTime.value?.first ?: 8)
+                set(Calendar.MINUTE, _selectedTime.value?.second ?: 0)
+                set(Calendar.SECOND, 0)
+            }
+
+        // Schedule the notification
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY, // Repeat daily
+            pendingIntent
+        )
+
+        Log.d("ExerciseViewModel", "Exercise notification scheduled")
+        }
+    }
+
+     */
 }

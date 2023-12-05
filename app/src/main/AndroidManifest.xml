@@ -35,6 +35,15 @@
             ></service>
 
         <receiver
+            android:name=".ui.exercise.ExerciseAlarmReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
+        <activity
+            android:name=".ui.exercise.ScheduleAlarmActivity"
+            android:exported="false" />
+
+        <receiver
             android:name=".AlarmReceiver"
             android:enabled="true"
             android:exported="false" />
