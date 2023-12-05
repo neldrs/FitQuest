@@ -81,8 +81,10 @@ class RecordRunFragment : Fragment() {
         }
 
         btnEndRun.setOnClickListener { view: View? ->
+            val distanceText = tvRunDistance.text.toString()
+            val numericPart = distanceText.replace(Regex("[^0-9.]"), "")
             val runRecord = RunRecord(
-                distance = viewModel.totalDistance.value ?: 0f,
+                distance = numericPart.toFloatOrNull() ?: 0f,
                 time = tvRunTime.text.toString(),
                 date = getCurrentDate()
             )
