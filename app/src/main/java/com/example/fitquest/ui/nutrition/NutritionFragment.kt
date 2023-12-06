@@ -1,13 +1,12 @@
 package com.example.fitquest.ui.nutrition
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -17,15 +16,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitquest.databinding.FragmentNutritionBinding
-import com.example.fitquest.ui.nutrition.RowEntry
-import com.example.fitquest.ui.nutrition.RowEntryAdapter
 
 import java.lang.Math.round
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.fitquest.R
-import com.example.fitquest.ui.nutrition.NutritionViewModel
 
 
 class NutritionFragment : Fragment() {
@@ -142,6 +138,9 @@ class NutritionFragment : Fragment() {
             builder.show()
         }
 
+        binding.CalorieChart.setOnClickListener {
+            view?.let { it1 -> CalorieChart(it1) }
+        }
         return root
     }
 
@@ -176,6 +175,12 @@ class NutritionFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun CalorieChart(view: View) {
+        val intent = Intent(requireContext(), CalorieChartActivity::class.java)
+        startActivity(intent)
+
     }
 }
 

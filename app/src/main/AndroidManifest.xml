@@ -13,7 +13,6 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,6 +23,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FitQuest"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.nutrition.CalorieChartActivity"
+            android:exported="false" />
+
         <service
             android:name=".ui.exercise.RecordRunService"
             android:enabled="true"
