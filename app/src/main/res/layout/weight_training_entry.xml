@@ -12,7 +12,7 @@
     android:padding="8dp"
     app:layout_goneMarginTop="0dp">
 
-    <TextView
+    <EditText
         android:id="@+id/exerciseText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         android:textColor="#46494C"
         android:textSize="16sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/setText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         android:textColor="#46494C"
         android:textSize="16sp"/>
 
-    <TextView
+    <EditText
         android:id="@+id/repText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:textColor="#46494C"
         android:textSize="16sp"/>
 
-    <TextView
+    <EditText
         android:id="@+id/weightText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

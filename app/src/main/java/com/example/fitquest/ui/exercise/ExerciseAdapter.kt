@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +34,7 @@ class ExerciseAdapter(
 
 
         init {
-            itemView.findViewById<ImageButton>(R.id.deleteButton).setOnClickListener {
+            itemView.findViewById<AppCompatButton>(R.id.deleteButton).setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     listener.onDeleteClick(position)
