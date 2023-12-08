@@ -22,6 +22,7 @@ class WeightTrainingViewModel : ViewModel() {
         exerciseEntry.value = currentList
     }
 
+    // function to remove exercise from the list
     fun removeExercise(position: Int) {
         val currentList = exerciseEntry.value ?: mutableListOf()
         if (position in currentList.indices) {

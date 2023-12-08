@@ -70,10 +70,11 @@ class WeightTrainingFragment : Fragment() {
             replaceFragment(ExerciseFragment())
         }
 
-        exerciseType.setOnFocusChangeListener(ClearTextOnFocus())
-        reps.setOnFocusChangeListener(ClearTextOnFocus())
-        sets.setOnFocusChangeListener(ClearTextOnFocus())
-        weight.setOnFocusChangeListener(ClearTextOnFocus())
+
+        //exerciseType.setOnFocusChangeListener(ClearTextOnFocus())
+        //reps.setOnFocusChangeListener(ClearTextOnFocus())
+        //sets.setOnFocusChangeListener(ClearTextOnFocus())
+        //weight.setOnFocusChangeListener(ClearTextOnFocus())
 
         val recyclerView: RecyclerView = binding.exerciseList
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

@@ -32,40 +32,36 @@
             android:id="@+id/exerciseType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:inputType="text"
             android:minHeight="48dp"
-            android:text="Type of Weight Exercise"
+            android:hint="Type of Weight Exercise"
             android:textColor="#46494C" />
 
         <EditText
             android:id="@+id/reps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
+            android:inputType="number"
             android:minHeight="48dp"
-            android:text="# of reps"
+            android:hint="# of reps"
             android:textColor="#46494C" />
 
         <EditText
             android:id="@+id/sets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
+            android:inputType="number"
             android:minHeight="48dp"
-            android:text="# of sets"
+            android:hint="# of sets"
             android:textColor="#46494C" />
 
         <EditText
             android:id="@+id/weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
+            android:inputType="number"
             android:minHeight="48dp"
-            android:text="# of weight"
+            android:hint="# of weight"
             android:textColor="#46494C" />
 
         <Button
