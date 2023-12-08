@@ -52,7 +52,7 @@
         android:textColor="#46494C"
         android:textSize="16sp"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/deleteButton"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
