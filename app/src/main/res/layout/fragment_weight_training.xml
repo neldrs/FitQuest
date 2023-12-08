@@ -35,7 +35,8 @@
             android:inputType="text"
             android:minHeight="48dp"
             android:hint="Type of Weight Exercise"
-            android:textColor="#46494C" />
+            android:textColor="#46494C"
+            android:textColorHint="#46494C80" />
 
         <EditText
             android:id="@+id/reps"
@@ -44,7 +45,8 @@
             android:inputType="number"
             android:minHeight="48dp"
             android:hint="# of reps"
-            android:textColor="#46494C" />
+            android:textColor="#46494C"
+            android:textColorHint="#46494C80" />
 
         <EditText
             android:id="@+id/sets"
@@ -53,7 +55,8 @@
             android:inputType="number"
             android:minHeight="48dp"
             android:hint="# of sets"
-            android:textColor="#46494C" />
+            android:textColor="#46494C"
+            android:textColorHint="#46494C80"/>
 
         <EditText
             android:id="@+id/weight"
@@ -62,7 +65,8 @@
             android:inputType="number"
             android:minHeight="48dp"
             android:hint="# of weight"
-            android:textColor="#46494C" />
+            android:textColor="#46494C"
+            android:textColorHint="#46494C80"/>
 
         <Button
             android:id="@+id/bEnter"
